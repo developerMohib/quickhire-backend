@@ -27,7 +27,7 @@ if (process.env.NODE_ENV !== 'production') {
 
 // Health check
 app.get('/', (_req: Request, res: Response) => {
-  res.send('🚀 personal web server is running');
+  res.send('🚀 Quick web server is running');
 });
 app.get('/health', (req: Request, res: Response) => {
   res.status(200).json({ status: 'ok', timestamp: new Date().toISOString(), uptime: process.uptime() });
