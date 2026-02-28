@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
-import { ZodSchema, ZodError } from 'zod';
+import { ZodSchema, ZodError,z } from 'zod';
 import { errors } from '../utils/AppError';
 
 export const validate = <T>(schema: ZodSchema, source: 'body' | 'query' | 'params' = 'body') => {
@@ -12,7 +12,7 @@ export const validate = <T>(schema: ZodSchema, source: 'body' | 'query' | 'param
       // 1. Explicitly check if it's a ZodError to get access to .issues
       if (error instanceof ZodError) {
         
-        // 2. Map the Zod 'issues' array, not a non-existent 'errors' property
+        // 2. Map the Zod 'issues'
         const messages = error.issues
           .map((e) => `${e.path.join('.')}: ${e.message}`)
           .join(', ');
@@ -25,4 +25,18 @@ export const validate = <T>(schema: ZodSchema, source: 'body' | 'query' | 'param
       next(error);
     }
   };
+};
+
+// login register validation
+export const authValidation = {
+  login: z.object({
+    identifier: z.string().min(1, 'Username or Email is required').trim(),
+    password: z.string().min(6, 'Password must be at least 6 characters').trim(),
+  }),
+  
+  register: z.object({
+    username: z.string().min(3, 'Username must be at least 3 characters').trim(),
+    email: z.string().email('Invalid email address').trim(),
+    password: z.string().min(6, 'Password must be at least 6 characters').trim(),
+  }),
 };

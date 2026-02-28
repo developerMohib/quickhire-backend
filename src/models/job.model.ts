@@ -44,12 +44,7 @@ const jobSchema = new Schema<IJob>(
     },
     category: {
       type: String,
-      required: [true, 'Category is required'],
-      enum: [
-        'Engineering', 'Design', 'Marketing', 'Sales',
-        'Support', 'Finance', 'HR', 'Other',
-      ],
-      index: true,
+      required: [true, 'Category is required'],      
     },
     description: {
       type: String,
@@ -60,11 +55,15 @@ const jobSchema = new Schema<IJob>(
     salary_range: {
       min: { type: Number, min: 0 },
       max: { type: Number, min: 0 },
-      currency: { type: String, default: 'USD', enum: ['USD', 'EUR', 'GBP', 'OTHER'] },
-      period: { 
-        type: String, 
+      currency: {
+        type: String,
+        default: 'USD',
+        enum: ['USD', 'EUR', 'GBP', 'OTHER'],
+      },
+      period: {
+        type: String,
         default: 'yearly',
-        enum: ['hourly', 'daily', 'monthly', 'yearly']
+        enum: ['hourly', 'daily', 'monthly', 'yearly'],
       },
     },
     employment_type: {
@@ -77,7 +76,7 @@ const jobSchema = new Schema<IJob>(
     application_deadline: {
       type: Date,
       validate: {
-        validator: function(this: IJob, value: Date) {
+        validator: function (this: IJob, value: Date) {
           return !value || value > new Date();
         },
         message: 'Application deadline must be in the future',
@@ -86,32 +85,20 @@ const jobSchema = new Schema<IJob>(
   },
   {
     timestamps: { createdAt: 'created_at', updatedAt: 'updated_at' },
-    toJSON: { 
-      virtuals: true, 
-      transform: (_, ret) => {
-        // ✅ Use destructuring instead of delete (type-safe)
-        const { __v, ...rest } = ret.toObject();
-        return rest;
-      }
-    },
-    toObject: { 
-      virtuals: true,
-      transform: (_, ret) => {
-        // ✅ Use destructuring instead of delete (type-safe)
-        const { __v, ...rest } = ret.toObject();
-        return rest;
-      }
-    },
-  }
+    
+  },
 );
 
 // Text index for search
 jobSchema.index({ title: 'text', company: 'text', description: 'text' });
 
 // Instance method
-jobSchema.methods.isExpired = function(): boolean {
-  return this.application_deadline ? new Date() > this.application_deadline : false;
+jobSchema.methods.isExpired = function (): boolean {
+  return this.application_deadline
+    ? new Date() > this.application_deadline
+    : false;
 };
 
-const Job: Model<IJob> = mongoose.models.Job || mongoose.model<IJob>('Job', jobSchema);
+const Job: Model<IJob> =
+  mongoose.models.Job || mongoose.model<IJob>('Job', jobSchema);
 export default Job;

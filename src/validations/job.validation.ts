@@ -5,7 +5,7 @@ export const jobValidation = {
     title: z.string().min(1, 'Title is required').max(200, 'Title cannot exceed 200 characters').trim(),
     company: z.string().min(1, 'Company name is required').trim(),
     location: z.string().min(1, 'Location is required').trim(),
-    category: z.enum(['Engineering', 'Design', 'Marketing', 'Sales', 'Support', 'Finance', 'HR', 'Other']),
+    category: z.string().min(1, 'Category is required').trim(),
     description: z.string().min(1, 'Description is required').max(5000, 'Description cannot exceed 5000 characters'),
     requirements: z.array(z.string()).optional(),
     salary_range: z.object({
@@ -16,7 +16,13 @@ export const jobValidation = {
     }).optional(),
     employment_type: z.enum(['full-time', 'part-time', 'contract', 'internship']).default('full-time'),
     remote: z.boolean().default(false),
-    application_deadline: z.date().optional().refine((val) => !val || val > new Date(), {
+    application_deadline: z
+    .union([
+      z.date(),
+      z.string().transform((val) => new Date(val))
+    ])
+    .optional()
+    .refine((val) => !val || val > new Date(), {
       message: 'Application deadline must be in the future',
     }),
   }),
@@ -25,7 +31,7 @@ export const jobValidation = {
     title: z.string().max(200).trim().optional(),
     company: z.string().trim().optional(),
     location: z.string().trim().optional(),
-    category: z.enum(['Engineering', 'Design', 'Marketing', 'Sales', 'Support', 'Finance', 'HR', 'Other']).optional(),
+    category: z.string().optional(),
     description: z.string().max(5000).optional(),
     requirements: z.array(z.string()).optional(),
     salary_range: z.object({

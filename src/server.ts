@@ -26,7 +26,6 @@ const startServer = async () => {
 
     const server = app.listen(PORT, () => {
       console.log(`🚀 Server running on port ${PORT} in ${env.NODE_ENV} mode`);
-      console.log(`📍 API Base URL: http://localhost:${PORT}/api`);
     });
 
     // Graceful shutdown
