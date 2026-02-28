@@ -2,7 +2,7 @@
 
 RESTful API for QuickHire Job Board built with **Node.js + Express + TypeScript + MongoDB + Zod**.
 
-## 🚀 Features
+## 🚀 Features 
 - ✅ TypeScript with strict mode
 - ✅ MongoDB + Mongoose
 - ✅ Input validation with **Zod**
@@ -10,6 +10,11 @@ RESTful API for QuickHire Job Board built with **Node.js + Express + TypeScript 
 - ✅ Admin token authentication
 - ✅ Pagination, filtering, search
 - ✅ Clean architecture (Controller → Service → Model)
+
+## Explainatin 
+- Video() 
+- live Link([quickhire-backend.vercel.app](https://quickhire-backend.vercel.app/))
+
 
 ## 📋 API Endpoints
 
@@ -39,7 +44,7 @@ RESTful API for QuickHire Job Board built with **Node.js + Express + TypeScript 
 
 ### Installation
 ```bash
-git clone <your-repo>
+git clone https://github.com/developerMohib/quickhire-backend.git
 cd quickhire-backend
 npm install
 cp .env.example .env  # Edit with your config
@@ -51,21 +56,25 @@ Add header to admin requests:
 Authorization: Bearer your-admin-token
 
 📁 Structure
+
+
 src/
-├── config/      # DB & env config
-├── controllers/ # Request handlers
-├── services/    # Logic
-├── routes/      # API routes
-├── middleware/  # Auth, validation, error
-├── models/      # Mongoose schemas
-├── utils/       # Helpers utils
-├── validations/ # Zod validation schemas
-├── app.ts       # Express setup
-└── server.ts    # Entry point
+├── config/      # Database connection, environment variable configurations
+├── controllers/ # Express request handlers, manages request/response flow
+├── services/    # Business logic layer (interacts with models)
+├── routes/      # API route definitions
+├── middleware/  # Authentication, validation, and error handling middleware
+├── models/      # Mongoose schemas and data models
+├── utils/       # Helper functions and reusable utilities
+├── validations/ # Zod validation schemas for request data
+├── app.ts       # Express application setup (middlewares, routes config)
+└── server.ts    # Entry point: Database connection & server listening
 
 
 🌐 Deployment
-Works with Vercel, Railway, Render:
+Works with Vercel
 Build: npm run build
 Start: npm start
-Set env vars in platform dashboard
+- vercel
+- vercel --prod
+go to dashboard and use the domain
