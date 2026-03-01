@@ -15,7 +15,12 @@ import authRoute from './routes/auth.route';
 const app = express();
 
 // CORS
-app.use(cors({ origin: process.env.CORS_ORIGIN, credentials: true }));
+const corsOptions = {
+  origin: ['http://localhost:3000','http://localhost:5000'],
+  optionsSuccessStatus: 200,
+  credentials: true
+}
+app.use(cors(corsOptions));
 
 // Body parsing
 app.use(express.json());

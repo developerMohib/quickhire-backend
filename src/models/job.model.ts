@@ -4,7 +4,16 @@ export interface IJob extends Document {
   title: string;
   company: string;
   location: string;
-  category: string;
+  category:
+    | 'Engineering'
+    | 'Design'
+    | 'Sales'
+    | 'Marketing'
+    | 'Finance'
+    | 'Technology'
+    | 'Business'
+    | 'Human_Resource'
+    | 'Other';
   description: string;
   requirements?: string[];
   salary_range?: {
@@ -44,7 +53,18 @@ const jobSchema = new Schema<IJob>(
     },
     category: {
       type: String,
-      required: [true, 'Category is required'],      
+      required: [true, 'Category is required'],
+      enum: [
+        'Engineering',
+        'Design',
+        'Sales',
+        'Marketing',
+        'Finance',
+        'Technology',
+        'Business',
+        'Human_Resource',
+        'Other',
+      ],
     },
     description: {
       type: String,
@@ -85,7 +105,6 @@ const jobSchema = new Schema<IJob>(
   },
   {
     timestamps: { createdAt: 'created_at', updatedAt: 'updated_at' },
-    
   },
 );
 
