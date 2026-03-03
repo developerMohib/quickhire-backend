@@ -5,7 +5,6 @@ import { StatusCodes } from 'http-status-codes';
 import jobService from '../services/job.service';
 import { ApiResponse, sendResponse } from '../utils/ApiResponse';
 import { jobValidation } from '../validations/job.validation';
-import Job from '../models/job.model';
 
 class JobController {
   async listJobs(req: Request, res: Response, next: NextFunction) {
@@ -21,31 +20,6 @@ class JobController {
           result.meta,
         ),
       );
-    } catch (error) {
-      next(error);
-    }
-  }
-
-  async searchJobs(req: Request, res: Response, next: NextFunction) {
-    try {
-      const { keyword, location } = req.query;
-      console.log(keyword,location,32)
-
-      const query = {};
-
-      if (keyword) {
-      query.$or = [
-        { title: { $regex: keyword, $options: 'i' } },
-        { category: { $regex: keyword, $options: 'i' } }
-      ];
-    }
-      if (location) {
-      query.location = location;
-    }
-
-    const result = await Job.find(query);
-    res.send(result);
-    
     } catch (error) {
       next(error);
     }
@@ -109,6 +83,7 @@ class JobController {
   async getCategories(req: Request, res: Response, next: NextFunction) {
     try {
       const categories = await jobService.getCategories();
+      console.log('86',categories)
       return sendResponse(
         res,
         StatusCodes.OK,

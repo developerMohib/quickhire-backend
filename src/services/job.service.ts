@@ -38,7 +38,7 @@ async listJobs(params: ListJobsParams): Promise<JobListResult> {
     const { 
       page, limit, search, category, location, remote, employment_type, sortBy, order 
     } = params;
-
+console.log('paga',params)
     // Correct query: Only find jobs that haven't expired
     const query: JobFilter = { 
       $or: [
@@ -59,7 +59,7 @@ async listJobs(params: ListJobsParams): Promise<JobListResult> {
     };
     
     const [jobs, total] = await Promise.all([
-      Job.find(query)
+      Job.find()
         .sort(sortOption)
         .skip((page - 1) * limit)
         .limit(limit)
@@ -67,7 +67,7 @@ async listJobs(params: ListJobsParams): Promise<JobListResult> {
         .exec(),
       Job.countDocuments(query),
     ]);
-    
+
     return { 
       data: jobs, 
       meta: { page, limit, total, totalPages: Math.ceil(total / limit) } 
@@ -112,9 +112,29 @@ async listJobs(params: ListJobsParams): Promise<JobListResult> {
     if (!job) throw errors.notFound('Job');
   }
 
-  async getCategories(): Promise<string[]> {
-    return await Job.distinct('category');
-  }
+  // async getCategories(): Promise<string[]> {
+  //   return await Job.distinct('category');
+  // }
+
+  async getCategories(): Promise<{ title: string; count: number }[]> {
+  return await Job.aggregate([
+    {
+      $group: {
+        _id: "$category",
+        count: { $sum: 1 }
+      }
+    },
+    {
+      $project: {
+        _id: 0,
+        title: "$_id",
+        count: 1
+      }
+    },
+    { $sort: { title: 1 } }   // Optional: Sort alphabetically
+  ]);
+}
+
 
   async getLocations(): Promise<string[]> {
     return await Job.distinct('location');
