@@ -35,6 +35,21 @@ class AuthController {
       next(error);
     }
   }
+
+async logout(req: Request, res: Response, next: NextFunction) {
+  try {
+    await authService.logout();
+
+    return sendResponse(
+      res,
+      StatusCodes.OK,
+      ApiResponse.success('Logout successful', null),
+    );
+  } catch (error) {
+    next(error);
+  }
+}
+
 }
 
 export default new AuthController();

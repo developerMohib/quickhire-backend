@@ -9,6 +9,7 @@ router.get('/jobs', jobController.listJobs);
 router.get('/categories', jobController.getCategories);
 router.get('/locations', jobController.getLocations);
 router.get('/:id', jobController.getJob);
+router.get('/search', jobController.getJob);
 
 // Admin routes
 router.post('/job',adminAuth, validate(jobValidation.create), jobController.createJob);

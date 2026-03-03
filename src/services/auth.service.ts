@@ -28,7 +28,7 @@ class AuthService {
       password: hashedPassword,
     });
 
-    return { id: newUser._id, username: newUser.username ,hashedPassword};
+    return { id: newUser._id, username: newUser.username, hashedPassword };
   }
 
   async login(usernameOrEmail: string, password: string) {
@@ -39,7 +39,7 @@ class AuthService {
     if (!user || !user.password) {
       throw errors.unauthorized('Invalid credentials');
     }
- 
+
     // 2. Compare Password
     const isMatch = await bcrypt.compare(password, user?.password);
     if (!isMatch) {
@@ -49,6 +49,9 @@ class AuthService {
     // 3. Generate Token
     const token = generateToken({ id: user._id, role: 'user' });
     return { token, user: { id: user._id, username: user.username } };
+  }
+  async logout() {
+    return;
   }
 }
 

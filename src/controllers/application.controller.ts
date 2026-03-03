@@ -7,6 +7,7 @@ class ApplicationController {
   async createApplication(req: Request, res: Response, next: NextFunction) {
     try {
       const application = await applicationService.createApplication(req.body);
+      console.log(req.body)
       return sendResponse(res, StatusCodes.CREATED, ApiResponse.success('Application submitted successfully', application));
     } catch (error) { next(error); }
   }

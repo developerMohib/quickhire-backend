@@ -1,11 +1,15 @@
 import Application, { IApplication } from "../models/application.model";
 import Job from "../models/job.model";
 import { errors } from "../utils/AppError";
-import { MongoError } from 'mongodb';
+import { MongoError, ObjectId } from 'mongodb';
 
 class ApplicationService {
   async createApplication(data: Partial<IApplication>): Promise<IApplication> {
-    const job = await Job.findById(data.job_id);
+    console.log('data',data)
+    if(!data._id){
+      errors.notFound('Job');
+    }
+    const job = await Job.findById({ _id: data.job_id });
     if (!job) throw errors.notFound('Job');
     if (job.isExpired()) throw errors.badRequest('This job is no longer accepting applications');
     
